@@ -7,6 +7,10 @@ KINDLE_EMAIL_DOMAINS = {
   'kindle.com'      => 2,
 }
 
+get '/' do 
+  redirect 'http://github.com/kyanny/hatena-bookmark-webhook-kindleit'
+end
+
 post '/kindleit/' do 
   unless ENV['HATENA_BOOKMARK_WEBHOOK_KEY'] == params['key']
     logger.info('key not match.')
