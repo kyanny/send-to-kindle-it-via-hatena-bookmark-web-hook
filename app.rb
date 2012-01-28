@@ -6,18 +6,23 @@ KINDLE_EMAIL_DOMAINS = {
   'free.kindle.com' => 1,
   'kindle.com'      => 2,
 }
+TRIGGER_COMMENT = 'via ifttt'
 
 get '/' do 
-  redirect 'http://github.com/kyanny/hatena-bookmark-webhook-kindleit'
+  redirect 'http://github.com/kyanny/send-to-kindle-it-via-hatena-bookmark-web-hook'
 end
 
 post '/kindleit/' do 
+  unless ENV['HATENA_BOOKMARK_WEBHOOK_KEY']
+    logger.info('HATENA_BOOKMARK_WEBHOOK_KEY not set.')
+  end
+  
   unless ENV['HATENA_BOOKMARK_WEBHOOK_KEY'] == params['key']
-    logger.info('key not match.')
+    logger.info('HATENA_BOOKMARK_WEBHOOK_KEY not match.')
     return
   end
   
-  unless params['comment'].match(/via ifttt/)
+  unless params['comment'].match(/#{TRIGGER_COMMENT}/)
     logger.info('comment not match.')
     return
   end
